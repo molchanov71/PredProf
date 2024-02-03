@@ -1,3 +1,5 @@
+__all__ = ['data_new']
+
 import csv
 
 with open('space.txt', mode='r', encoding='utf8') as in_file:
@@ -9,6 +11,7 @@ data_new = []
 for row in data:
     '''
     Описание переменных:
+    row - исходные данные каждого корабля
     ship_name - Название корабля, значение ShipName в каждой строке
     n_ind - индекс цифры n, первой цифры в номере корабля, в строке ship_name
     m_ind - индекс цифры m, второй цифры в номере корабля, в строке ship_name
@@ -37,17 +40,20 @@ for row in data:
         y_new = -(n + y_d) * m
     row_new = {'ShipName': ship_name, 'planet': row['planet'], 'coord_place': f'{x_new} {y_new}',
                'direction': row['direction']}
+    # Добавление исправленных данных в новый массив
     data_new.append(row_new)
-# to_write - данные, которые нужно вывести в файл space_new.txt
-to_write = []
-for row in data_new:
-    '''
-    Описание переменных: 
-    last_ind - индекс последней буквы в коде корабля
-    '''
-    last_ind = row['ShipName'].index('-') - 1
-    if row['ShipName'][last_ind] == 'V':
-        to_write.append(f'{row["ShipName"]} - ({", ".join(row["coord_place"].split())})\n')
-# Вывод данных в файл space_new.txt
-with open('space_new.txt', mode='w', encoding='utf8') as out_file:
-    out_file.writelines(to_write)
+
+if __name__ == '__main__':
+    # to_write - данные, которые нужно вывести в файл space_new.txt
+    to_write = []
+    for row in data_new:
+        '''
+        Описание переменных: 
+        last_ind - индекс последней буквы в коде корабля
+        '''
+        last_ind = row['ShipName'].index('-') - 1
+        if row['ShipName'][last_ind] == 'V':
+            to_write.append(f'{row["ShipName"]} - ({", ".join(row["coord_place"].split())})\n')
+    # Вывод данных в файл space_new.txt
+    with open('space_new.txt', mode='w', encoding='utf8') as out_file:
+        out_file.writelines(to_write)
